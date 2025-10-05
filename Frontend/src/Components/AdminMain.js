@@ -61,19 +61,24 @@ const AdminDashboard = () => {
 
     const handleDelete = async (id, type) => {
         try {
-            await fetch(`http://localhost:8080/jobPortal/admin/${type}/${id}`, {
+            let endpoint = '';
+            if (type === 'users') endpoint = 'user';
+            else if (type === 'companies') endpoint = 'company';
+            else if (type === 'jobs') endpoint = 'jobs';
+
+            await fetch(`http://localhost:8080/jobPortal/admin/${endpoint}/${id}`, {
                 method: 'DELETE',
             });
 
             if (type === 'users') {
-                setUserCount(prevCount => prevCount - 1);
-                setUsers(prevUsers => prevUsers.filter(user => user._id !== id));
+                setUserCount(prev => prev - 1);
+                setUsers(prev => prev.filter(user => user._id !== id));
             } else if (type === 'companies') {
-                setCompanyCount(prevCount => prevCount - 1);
-                setCompanies(prevCompanies => prevCompanies.filter(company => company._id !== id));
+                setCompanyCount(prev => prev - 1);
+                setCompanies(prev => prev.filter(company => company._id !== id));
             } else if (type === 'jobs') {
-                setJobCount(prevCount => prevCount - 1);
-                setJobs(prevJobs => prevJobs.filter(job => job._id !== id));
+                setJobCount(prev => prev - 1);
+                setJobs(prev => prev.filter(job => job._id !== id));
             }
 
         } catch (error) {
@@ -82,18 +87,33 @@ const AdminDashboard = () => {
     };
 
     return (
+        
         <div className="dashboard-container">
             {/* Header */}
-            <header className="header">
-                <div className="nav-container">
-                    <div className="nav-links">
-                        <a href="/admin" className="nav-link">Home</a>
-                        <a href="/search" className="nav-link">Search</a>
-                       
-                        <a href="/login" className="nav-link logout-button">Logout</a>
-                    </div>
-                </div>
-            </header>
+           <header className="header">
+    {/* Centered Title */}
+    <div className="admin-page-banner">
+        <h1>Admin Access</h1>
+    </div>
+
+    {/* Nav links on the right */}
+    <div className="nav-container">
+        <div className="nav-links">
+            <a href="/admin" className="nav-link">Home</a>
+            <a href="/search" className="nav-link">Search</a>
+            <button 
+                className="nav-link logout-button"
+                onClick={() => {
+                    localStorage.removeItem("admin");
+                    window.location.href = "/login";
+                }}
+            >
+                Logout
+            </button>
+        </div>
+    </div>
+</header>
+
 
             {/* Main Content */}
             <main className="main-content">
@@ -112,7 +132,6 @@ const AdminDashboard = () => {
                         </div>
                     ))}
                 </div>
-
 
                 {selectedList === 'users' && (
                     <div className="table-container">
@@ -182,7 +201,7 @@ const AdminDashboard = () => {
                             <tbody>
                             {jobs.map(job => (
                                 <tr key={job._id}>
-                                    <td>{job.name}</td>
+                                    <td>{job.title}</td>
                                     <td>{job.description}</td>
                                     <td className="action-buttons">
                                         <button className="update-button">Update</button>

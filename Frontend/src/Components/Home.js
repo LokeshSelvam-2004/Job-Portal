@@ -13,7 +13,7 @@ const JobPage = () => {
     useEffect(() => {
         const checkLoginStatus = () => {
             const token = localStorage.getItem("token");
-            const userRole = JSON.parse(localStorage.getItem("userRole"));
+            const userRole = localStorage.getItem("userRole");
 
             if (token) {
                 setIsLoggedIn(true);

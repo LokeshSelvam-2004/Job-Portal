@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Auth.css'; // Reuse the same CSS for styling
 
 const RegisterPage = () => {
-    const [isUserRegister, setIsUserRegister] = useState(true); // Toggle between user and company registration
+    const [isUserRegister, setIsUserRegister] = useState(true); 
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -15,7 +15,7 @@ const RegisterPage = () => {
         city: '',
         state: '',
         country: '',
-        linkedin: '', // Add LinkedIn to the form data
+        linkedin: '',
         ceo: '',
         type: '',
     });
